@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Recipe Book</title>
+  <style>
+:root {
+  --bg: #fdf6ec;
+  --card: #ffffff;
+  --accent: #c0392b;
+  --accent-light: #f9e5e3;
+  --text: #2c2c2c;
+  --muted: #6b6b6b;
+  --border: #e2d9cf;
+  --shadow: 0 2px 12px rgba(0,0,0,.08);
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  padding: 1.5rem 1rem 3rem;
+}
+
+header {
+  text-align: center;
+  padding: 2rem 1rem 1.5rem;
+}
+header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+  letter-spacing: -.5px;
+}
+header p {
+  color: var(--muted);
+  font-size: .9rem;
+  margin-top: .3rem;
+}
+
+/* Table of contents */
+.toc {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.5rem;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  box-shadow: var(--shadow);
+}
+.toc h2 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin-bottom: .7rem;
+}
+.toc ol { padding-left: 1.4rem; }
+.toc li { margin: .3rem 0; }
+.toc a { color: var(--accent); text-decoration: none; font-weight: 500; }
+.toc a:hover { text-decoration: underline; }
+
+/* Recipe cards */
+.recipes { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem; }
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.card-header {
+  background: var(--accent);
+  color: #fff;
+  padding: 1.2rem 1.5rem;
+}
+.card-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.card-header .source {
+  font-size: .75rem;
+  opacity: .75;
+  margin-top: .2rem;
+}
+
+.meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  padding: .9rem 1.5rem;
+  background: var(--accent-light);
+  border-bottom: 1px solid var(--border);
+}
+.meta-item { font-size: .85rem; color: var(--muted); }
+.meta-item strong { color: var(--text); }
+
+.card-body { padding: 1.2rem 1.5rem; }
+
+.section-title {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--accent);
+  margin: 1.2rem 0 .5rem;
+  padding-bottom: .3rem;
+  border-bottom: 2px solid var(--accent-light);
+}
+.section-title:first-child { margin-top: 0; }
+
+.ingredients { list-style: none; }
+.ingredients li {
+  padding: .4rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: .95rem;
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+}
+.ingredients li:last-child { border-bottom: none; }
+.ingredients .amount { font-weight: 600; min-width: 3rem; }
+.ingredients .unit   { color: var(--muted); min-width: 4rem; }
+
+.instructions { list-style: none; counter-reset: step; }
+.instructions li {
+  counter-increment: step;
+  display: flex;
+  gap: .9rem;
+  padding: .5rem 0;
+  font-size: .95rem;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.instructions li:last-child { border-bottom: none; }
+.instructions li::before {
+  content: counter(step);
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: .1rem;
+}
+
+.notes-box {
+  background: #fffbf0;
+  border-left: 4px solid #f0c040;
+  border-radius: 0 8px 8px 0;
+  padding: .7rem 1rem;
+  font-size: .9rem;
+  color: #5a4a00;
+  margin-top: .5rem;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: .8rem;
+  margin-top: 3rem;
+}
+
+/* iPad / print optimisations */
+@media (min-width: 768px) {
+  body { padding: 2rem 2rem 4rem; }
+  .card-header h2 { font-size: 1.6rem; }
+}
+@media print {
+  body { background: #fff; }
+  .card { page-break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍽 My Recipe Book</h1>
+  <p>5 recipes &nbsp;·&nbsp; Generated April 30, 2026</p>
+</header>
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#recipe-1">Banana Bread</a></li>
+    <li><a href="#recipe-2">Caesar Salad</a></li>
+    <li><a href="#recipe-3">Chicken Tikka Masala</a></li>
+    <li><a href="#recipe-4">Classic Chocolate Chip Cookies</a></li>
+    <li><a href="#recipe-5">Spaghetti Carbonara</a></li>
+  </ol>
+</nav>
+
+<div class="recipes">
+<article class="card" id="recipe-1">
+  <div class="card-header">
+    <h2>Banana Bread</h2>
+    <div class="source">Source: banana_bread.txt</div>
+  </div>
+  <div class="meta-bar">
+    <span class="meta-item"><strong>Servings:</strong> 1 loaf (8 slices)</span>
+    <span class="meta-item"><strong>Prep:</strong> 15 minutes</span>
+    <span class="meta-item"><strong>Cook:</strong> 60-65 minutes</span>
+  </div>
+  <div class="card-body">
+    <div class="section-title">Ingredients</div>
+    <ul class="ingredients">
+      <li><span class="amount">3</span>very ripe bananas</li>
+      <li><span class="amount">1/3</span><span class="unit">cup</span>melted butter</li>
+      <li><span class="amount">3/4</span><span class="unit">cup</span>sugar</li>
+      <li><span class="amount">1</span>egg, beaten</li>
+      <li><span class="amount">1</span><span class="unit">tsp</span>vanilla</li>
+      <li><span class="amount">1</span><span class="unit">tsp</span>baking soda</li>
+      <li>Pinch of salt</li>
+      <li><span class="amount">1 1</span>/2 cups all-purpose flour</li>
+    </ul>
+    <div class="section-title">Instructions</div>
+    <ol class="instructions">
+      <li><span>Preheat your oven to 350°F (175°C). Grease a 4x8-inch loaf pan.</span></li>
+      <li><span>In a mixing bowl, mash the ripe bananas with a fork until smooth.</span></li>
+      <li><span>Stir the melted butter into the mashed bananas.</span></li>
+      <li><span>Mix in the sugar, beaten egg, and vanilla extract.</span></li>
+      <li><span>Sprinkle the baking soda and salt over the mixture and stir.</span></li>
+      <li><span>Add the flour and mix until just combined — do not overmix.</span></li>
+      <li><span>Pour the batter into the prepared loaf pan.</span></li>
+      <li><span>Bake for 60–65 minutes, or until a toothpick inserted in the center comes out clean.</span></li>
+      <li><span>Let cool in the pan for a few minutes before turning out onto a wire rack.</span></li>
+    </ol>
+    <div class="section-title">Notes</div>
+    <div class="notes-box">The riper and blacker the bananas, the sweeter and more flavorful the bread will be!</div>
+  </div>
+</article>
+
+<article class="card" id="recipe-2">
+  <div class="card-header">
+    <h2>Caesar Salad</h2>
+    <div class="source">Source: caesar_salad.csv</div>
+  </div>
+  <div class="meta-bar">
+    <span class="meta-item"><strong>Servings:</strong> 2</span>
+    <span class="meta-item"><strong>Prep:</strong> 20 minutes</span>
+    <span class="meta-item"><strong>Cook:</strong> 0 minutes</span>
+  </div>
+  <div class="card-body">
+    <div class="section-title">Ingredients</div>
+    <ul class="ingredients">
+      <li><span class="amount">1</span><span class="unit">head</span>romaine lettuce (washed and torn)</li>
+      <li><span class="amount">0.5</span><span class="unit">cup</span>Parmesan cheese (freshly grated)</li>
+      <li><span class="amount">1</span><span class="unit">cup</span>croutons</li>
+      <li><span class="amount">2</span>anchovy fillets (minced)</li>
+      <li><span class="amount">1</span>garlic clove (minced)</li>
+      <li><span class="amount">1</span><span class="unit">tsp</span>Dijon mustard</li>
+      <li><span class="amount">1</span><span class="unit">tsp</span>Worcestershire sauce</li>
+      <li><span class="amount">2</span><span class="unit">tbsp</span>lemon juice</li>
+      <li><span class="amount">0.5</span><span class="unit">cup</span>mayonnaise</li>
+      <li><span class="amount">0.25</span><span class="unit">cup</span>Parmesan cheese (grated)</li>
+      <li>Salt and black pepper to taste</li>
+    </ul>
+    <div class="section-title">Instructions</div>
+    <ol class="instructions">
+      <li><span>Whisk together anchovies and garlic in a large bowl until a paste forms.</span></li>
+      <li><span>Add mustard and Worcestershire sauce; whisk to combine.</span></li>
+      <li><span>Whisk in lemon juice then mayonnaise until smooth and creamy.</span></li>
+      <li><span>Stir in 1/4 cup Parmesan and season generously with salt and pepper.</span></li>
+      <li><span>Add romaine lettuce and toss well to coat every leaf with dressing.</span></li>
+      <li><span>Top with croutons and remaining Parmesan. Serve immediately.</span></li>
+    </ol>
+    <div class="section-title">Notes</div>
+    <div class="notes-box">A classic Caesar salad. Use fresh Parmesan for best results.</div>
+  </div>
+</article>
+
+<article class="card" id="recipe-3">
+  <div class="card-header">
+    <h2>Chicken Tikka Masala</h2>
+    <div class="source">Source: chicken_tikka_masala.md</div>
+  </div>
+  <div class="meta-bar">
+    <span class="meta-item"><strong>Servings:</strong> 4</span>
+    <span class="meta-item"><strong>Prep:</strong> 30 minutes (plus 2 hours marinating)</span>
+    <span class="meta-item"><strong>Cook:</strong> 40 minutes</span>
+  </div>
+  <div class="card-body">
+    <div class="section-title">Ingredients</div>
+    <ul class="ingredients">
+      <li><span class="amount">1</span><span class="unit">cup</span>plain yogurt</li>
+      <li><span class="amount">2</span><span class="unit">tbsp</span>lemon juice</li>
+      <li><span class="amount">2</span><span class="unit">tsp</span>cumin</li>
+      <li><span class="amount">1</span><span class="unit">tsp</span>cinnamon</li>
+      <li><span class="amount">2</span><span class="unit">tsp</span>cayenne pepper</li>
+      <li><span class="amount">2</span><span class="unit">tsp</span>black pepper</li>
+      <li><span class="amount">1</span><span class="unit">tbsp</span>minced fresh ginger</li>
+      <li><span class="amount">1</span><span class="unit">tsp</span>salt</li>
+      <li><span class="amount">3</span>boneless chicken breasts, cut into bite-sized pieces</li>
+      <li><span class="amount">3</span><span class="unit">tbsp</span>butter</li>
+      <li><span class="amount">1</span><span class="unit">clove</span>garlic, minced</li>
+      <li><span class="amount">1</span>jalapeno pepper, finely chopped</li>
+      <li><span class="amount">2</span><span class="unit">tsp</span>cumin</li>
+      <li><span class="amount">2</span><span class="unit">tsp</span>paprika</li>
+      <li><span class="amount">1</span><span class="unit">tsp</span>salt</li>
+      <li><span class="amount">1</span><span class="unit">can</span>(8 oz) tomato sauce</li>
+      <li><span class="amount">1</span><span class="unit">cup</span>heavy cream</li>
+      <li><span class="amount">1/4</span><span class="unit">cup</span>fresh cilantro, chopped</li>
+    </ul>
+    <div class="section-title">Instructions</div>
+    <ol class="instructions">
+      <li><span>Combine yogurt, lemon juice, and marinade spices in a bowl. Add the chicken, cover, and refrigerate for at least 2 hours (overnight preferred).</span></li>
+      <li><span>Thread marinated chicken onto skewers and grill or broil until slightly charred, about 5 minutes per side. Set aside.</span></li>
+      <li><span>Melt butter in a large heavy skillet over medium heat. Sauté garlic and jalapeno for 1 minute. Add cumin, paprika, and salt; stir for 1 minute.</span></li>
+      <li><span>Pour in the tomato sauce and simmer for 15 minutes, stirring occasionally.</span></li>
+      <li><span>Stir in heavy cream and simmer until the sauce thickens, about 10 minutes.</span></li>
+      <li><span>Add the grilled chicken to the sauce and simmer for 10 minutes.</span></li>
+      <li><span>Garnish with fresh cilantro and serve over basmati rice or with naan bread.</span></li>
+    </ol>
+    <div class="section-title">Notes</div>
+    <div class="notes-box">The longer you marinate the chicken, the more tender and flavorful it will be. Overnight marinating gives the best results.</div>
+  </div>
+</article>
+
+<article class="card" id="recipe-4">
+  <div class="card-header">
+    <h2>Classic Chocolate Chip Cookies</h2>
+    <div class="source">Source: chocolate_chip_cookies.json</div>
+  </div>
+  <div class="meta-bar">
+    <span class="meta-item"><strong>Servings:</strong> 36 cookies</span>
+    <span class="meta-item"><strong>Prep:</strong> 15 min</span>
+    <span class="meta-item"><strong>Cook:</strong> 11 min</span>
+  </div>
+  <div class="card-body">
+    <div class="section-title">Ingredients</div>
+    <ul class="ingredients">
+      <li><span class="amount">2 1/4</span><span class="unit">cups</span>all-purpose flour</li>
+      <li><span class="amount">1</span><span class="unit">tsp</span>baking soda</li>
+      <li><span class="amount">1</span><span class="unit">tsp</span>salt</li>
+      <li><span class="amount">1</span><span class="unit">cup</span>unsalted butter, softened</li>
+      <li><span class="amount">3/4</span><span class="unit">cup</span>granulated sugar</li>
+      <li><span class="amount">3/4</span><span class="unit">cup</span>packed brown sugar</li>
+      <li><span class="amount">2</span>large eggs</li>
+      <li><span class="amount">2</span><span class="unit">tsp</span>vanilla extract</li>
+      <li><span class="amount">2</span><span class="unit">cups</span>chocolate chips</li>
+      <li><span class="amount">1</span><span class="unit">cup</span>chopped walnuts (optional)</li>
+    </ul>
+    <div class="section-title">Instructions</div>
+    <ol class="instructions">
+      <li><span>Preheat oven to 375°F (190°C). Line baking sheets with parchment paper.</span></li>
+      <li><span>Whisk together flour, baking soda, and salt in a bowl; set aside.</span></li>
+      <li><span>Beat butter and both sugars together until light and fluffy, about 3 minutes.</span></li>
+      <li><span>Add eggs one at a time, then mix in vanilla extract.</span></li>
+      <li><span>Gradually blend in the flour mixture until just combined.</span></li>
+      <li><span>Stir in chocolate chips and walnuts if using.</span></li>
+      <li><span>Drop rounded tablespoons of dough onto prepared baking sheets, spacing 2 inches apart.</span></li>
+      <li><span>Bake for 9–11 minutes or until golden brown. Cool on baking sheet for 2 minutes before transferring to wire rack.</span></li>
+    </ol>
+    <div class="section-title">Notes</div>
+    <div class="notes-box">For chewier cookies, refrigerate the dough for at least 1 hour before baking.</div>
+  </div>
+</article>
+
+<article class="card" id="recipe-5">
+  <div class="card-header">
+    <h2>Spaghetti Carbonara</h2>
+    <div class="source">Source: spaghetti_carbonara.txt</div>
+  </div>
+  <div class="meta-bar">
+    <span class="meta-item"><strong>Servings:</strong> 4</span>
+    <span class="meta-item"><strong>Prep:</strong> 10 minutes</span>
+    <span class="meta-item"><strong>Cook:</strong> 20 minutes</span>
+  </div>
+  <div class="card-body">
+    <div class="section-title">Ingredients</div>
+    <ul class="ingredients">
+      <li><span class="amount">400</span><span class="unit">g</span>spaghetti</li>
+      <li><span class="amount">200</span><span class="unit">g</span>pancetta or guanciale, diced</li>
+      <li><span class="amount">4</span><span class="unit">l</span>arge eggs</li>
+      <li><span class="amount">100</span><span class="unit">g</span>Pecorino Romano, finely grated</li>
+      <li><span class="amount">100</span><span class="unit">g</span>Parmigiano-Reggiano, finely grated</li>
+      <li><span class="amount">2</span><span class="unit">cloves</span>garlic</li>
+      <li>Salt and black pepper to taste</li>
+    </ul>
+    <div class="section-title">Instructions</div>
+    <ol class="instructions">
+      <li><span>Bring a large pot of salted water to a boil and cook spaghetti until al dente.</span></li>
+      <li><span>Meanwhile, cook the pancetta in a large skillet over medium heat until crispy, about 8 minutes.</span></li>
+      <li><span>In a bowl, whisk together the eggs and half the cheese. Season generously with black pepper.</span></li>
+      <li><span>Remove the skillet from heat. Add the drained pasta, tossing to coat in the pancetta fat.</span></li>
+      <li><span>Pour the egg mixture over the pasta, tossing quickly so the eggs don't scramble. Add pasta water a splash at a time to create a creamy sauce.</span></li>
+      <li><span>Serve immediately topped with remaining cheese and extra black pepper.</span></li>
+    </ol>
+    <div class="section-title">Notes</div>
+    <div class="notes-box">Do not add cream — traditional carbonara gets its creaminess from the eggs and cheese.</div>
+  </div>
+</article>
+
+</div>
+
+<footer>Recipe Book &copy; Apri &nbsp;·&nbsp; Open in Safari on iPad for best experience</footer>
+</body>
+</html>
