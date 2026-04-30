@@ -355,11 +355,13 @@ class PlainTextParser(RecipeParser):
 # ---------------------------------------------------------------------------
 
 _AMOUNT_PATTERN = re.compile(
-    r"^([\d½¼¾⅓⅔⅛⅜⅝⅞]+(?:[/ \-][\d½¼¾⅓⅔⅛⅜⅝⅞]+)?)\s*"
-    r"(cups?|tbsps?|tablespoons?|tsps?|teaspoons?|oz|ounces?|lbs?|pounds?|"
-    r"g|grams?|kg|kilograms?|ml|liters?|l|cloves?|heads?|bunches?|stalks?|"
+    # Amount: mixed numbers (e.g. "1 1/2"), plain fractions ("3/4"), integers, or vulgar fractions
+    r"^(\d+\s+\d+/\d+|\d+/\d+|\d+(?:\.\d+)?|[½¼¾⅓⅔⅛⅜⅝⅞])\s*"
+    # Unit: must match as a complete word (word boundary) to avoid "l" matching "large"
+    r"(cups?|tbsps?|tablespoons?|tsps?|teaspoons?|fl\.?\s*oz|oz|ounces?|lbs?|pounds?|"
+    r"grams?|kg|kilograms?|ml|liters?|litres?|cloves?|heads?|bunches?|stalks?|"
     r"cans?|packages?|slices?|pieces?|pinch(?:es)?|dash(?:es)?|"
-    r"small|medium|large|whole)?\s*"
+    r"small|medium|large|whole|g)\b\s*"
     r"(.*)",
     re.IGNORECASE,
 )
@@ -604,7 +606,7 @@ def _escape(text: str) -> str:
     )
 
 
-def render_html(recipes: List[Recipe], generated_at: str) -> str:
+def render_html(recipes: List[Recipe], generated_at: str, year: str = "") -> str:
     """Return the full HTML document as a string."""
     parts: List[str] = []
 
@@ -688,7 +690,7 @@ def render_html(recipes: List[Recipe], generated_at: str) -> str:
 
     parts.append('</div>\n\n')  # .recipes
 
-    parts.append(f'<footer>Recipe Book &copy; {generated_at[:4]} &nbsp;·&nbsp; Open in Safari on iPad for best experience</footer>\n')
+    parts.append(f'<footer>Recipe Book &copy; {_escape(year or generated_at[-4:])} &nbsp;·&nbsp; Open in Safari on iPad for best experience</footer>\n')
     parts.append('</body>\n</html>\n')
 
     return "".join(parts)
@@ -737,9 +739,11 @@ def main() -> None:
     print(f"\n  {len(recipes)} recipe(s) standardised successfully.")
 
     from datetime import datetime, timezone
-    generated_at = datetime.now(timezone.utc).strftime("%B %d, %Y")
+    now = datetime.now(timezone.utc)
+    generated_at = now.strftime("%B %d, %Y")
+    year = now.strftime("%Y")
 
-    html = render_html(recipes, generated_at)
+    html = render_html(recipes, generated_at, year)
     output_path.write_text(html, encoding="utf-8")
     print(f"  Output written to: {output_path}")
 
