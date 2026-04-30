@@ -1,0 +1,26 @@
+Recipe Name,Caesar Salad
+Servings,2
+Prep Time,20 minutes
+Cook Time,0 minutes
+Notes,"A classic Caesar salad. Use fresh Parmesan for best results."
+
+Section,Amount,Unit,Ingredient
+Salad,1,head,romaine lettuce (washed and torn)
+Salad,0.5,cup,Parmesan cheese (freshly grated)
+Salad,1,cup,croutons
+Dressing,2,,anchovy fillets (minced)
+Dressing,1,,garlic clove (minced)
+Dressing,1,tsp,Dijon mustard
+Dressing,1,tsp,Worcestershire sauce
+Dressing,2,tbsp,lemon juice
+Dressing,0.5,cup,mayonnaise
+Dressing,0.25,cup,Parmesan cheese (grated)
+Dressing,,,Salt and black pepper to taste
+
+Step,Instruction
+1,Whisk together anchovies and garlic in a large bowl until a paste forms.
+2,Add mustard and Worcestershire sauce; whisk to combine.
+3,Whisk in lemon juice then mayonnaise until smooth and creamy.
+4,Stir in 1/4 cup Parmesan and season generously with salt and pepper.
+5,Add romaine lettuce and toss well to coat every leaf with dressing.
+6,Top with croutons and remaining Parmesan. Serve immediately.

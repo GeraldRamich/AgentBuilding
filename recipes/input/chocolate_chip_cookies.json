@@ -1,0 +1,29 @@
+{
+  "name": "Classic Chocolate Chip Cookies",
+  "servings": "36 cookies",
+  "prepTime": "15 min",
+  "cookTime": "11 min",
+  "ingredients": [
+    { "qty": "2 1/4", "unit": "cups", "item": "all-purpose flour" },
+    { "qty": "1", "unit": "tsp", "item": "baking soda" },
+    { "qty": "1", "unit": "tsp", "item": "salt" },
+    { "qty": "1", "unit": "cup", "item": "unsalted butter, softened" },
+    { "qty": "3/4", "unit": "cup", "item": "granulated sugar" },
+    { "qty": "3/4", "unit": "cup", "item": "packed brown sugar" },
+    { "qty": "2", "unit": "", "item": "large eggs" },
+    { "qty": "2", "unit": "tsp", "item": "vanilla extract" },
+    { "qty": "2", "unit": "cups", "item": "chocolate chips" },
+    { "qty": "1", "unit": "cup", "item": "chopped walnuts (optional)" }
+  ],
+  "steps": [
+    "Preheat oven to 375°F (190°C). Line baking sheets with parchment paper.",
+    "Whisk together flour, baking soda, and salt in a bowl; set aside.",
+    "Beat butter and both sugars together until light and fluffy, about 3 minutes.",
+    "Add eggs one at a time, then mix in vanilla extract.",
+    "Gradually blend in the flour mixture until just combined.",
+    "Stir in chocolate chips and walnuts if using.",
+    "Drop rounded tablespoons of dough onto prepared baking sheets, spacing 2 inches apart.",
+    "Bake for 9–11 minutes or until golden brown. Cool on baking sheet for 2 minutes before transferring to wire rack."
+  ],
+  "notes": "For chewier cookies, refrigerate the dough for at least 1 hour before baking."
+}
